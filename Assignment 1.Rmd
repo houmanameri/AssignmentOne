@@ -1,0 +1,167 @@
+---
+title: "Group three - Assignment 1"
+author: "Houman Ameri,Sahabe Arbabie, Julio Carneiro"
+Date : " August 3rd, 2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(magrittr)
+library(tidyverse)
+library(tinytex)
+```
+
+
+## Introduction
+
+This dataset is about Covid analysis
+
+## Load dataset
+
+```{r echo=TRUE}
+covid4=read.csv("C:/Users/h.ameri/Desktop/covid4.csv")
+```
+
+
+## Print dataset
+```{r echo=TRUE}
+
+print(covid4)
+```
+## List Variables
+```{r echo=TRUE}
+names(covid4)
+
+```
+## Print top 15 rows
+```{r echo=TRUE}
+head(covid4, n=15)
+```
+
+## User defined function on dataset
+```{r echo=TRUE}
+testfunction <- function(x,y) {
+x+y
+}
+a=covid4$tot_cases[1]
+b=covid4$tot_cases[2]
+testfunction(a,b)
+
+```
+## Filter rows based on any logical criteria
+```{r echo=TRUE}
+covid5=as.data.frame(filter(covid4,covid4$new_death>5))
+print(covid5)
+```
+## Reshaping techniques
+```{r echo=TRUE}
+confirmedcases=covid4$conf_cases
+  
+probablecases= covid4$prob_cases
+
+totalcases=cbind(confirmedcases,probablecases)
+
+names(totalcases)[1] = "total cases"
+names(totalcases)[2] = "probable cases"
+
+
+print(totalcases)
+```
+## Remove missing values
+```{r echo=TRUE}
+is.na(covid4)
+```
+```{r echo=TRUE}
+covid6=as.data.frame(filter(covid4,!is.na(covid4$conf_cases)))
+is.na(covid6$conf_cases)
+```
+## Identify duplicated data 
+```{r echo=TRUE}
+duplicated(covid4$new_death)
+```
+## Remove duplicated data 
+
+```{r echo=TRUE}
+covid7=as.data.frame(covid4 %>% distinct(covid4$new_case))
+
+covid7
+
+```
+
+## Reorder multiple rows in descending order
+
+```{r}
+covid9=as.data.frame(covid7 %>% arrange(desc(covid7)))
+covid9
+```
+## Rename some of the column names
+
+```{r echo=TRUE}
+names(covid4)[1] = "name1"
+names(covid4)[2] = "name2"
+
+
+print(covid4)
+```
+## Adding new variables
+```{r echo=TRUE}
+covid10=as.data.frame(covid4 %>% mutate(newcolumn = new_death+4))
+covid10
+```
+## Create a training set using random number generator engine
+
+```{r echo=TRUE}
+set.seed(143)
+covid11=as.data.frame(covid4 %>% sample_n(10, replace = FALSE) )
+covid11
+```
+
+## Print the summary statistics
+```{r echo=TRUE}
+summary(covid4)
+```
+## Calculating Mean
+
+```{r echo=TRUE}
+mean(covid4$new_case)
+```
+
+## Calculating Median
+
+```{r echo=TRUE}
+median(covid4$new_case)
+```
+## Calculating Mode
+
+```{r echo=TRUE}
+mode(covid4$new_case)
+```
+## Calculating Median
+```{r echo=TRUE}
+median(covid4$new_case)
+```
+## Scatter plot for any 2 variables
+
+```{r echo=TRUE}
+covid10=as.data.frame(filter(covid10,!is.na(covid10$pnew_death)))
+ggplot(data = covid10, aes(x=pnew_death,y=newcolumn))+geom_point(color="steelblue",shape=9)
+```
+## Scatter bar plot for any 2 variables
+```{r echo=TRUE}
+ggplot(data=covid10,aes(x=pnew_death,fill=factor(newcolumn)))+geom_bar()
+```
+
+## Finding the correlation between any 2 variables
+
+```{r echo=TRUE}
+x=covid4[,"tot_death"]
+y=covid4[,"new_death"]
+xycorr<-cor(x,y,method="pearson")
+xycorr
+```
+## Conclusion
+
+Based on above calculation x and y are correlated
+
